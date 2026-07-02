@@ -1,20 +1,20 @@
 MEMORY
 {
-    FLASH : ORIGIN = 0x08000000, LENGTH = 0x100000
-    RAM   : ORIGIN = 0x20000000, LENGTH = 0x20000
+    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 0x100000
+    RAM   (rwx) : ORIGIN = 0x20000000, LENGTH = 0x20000
 }
 
+_estack = ORIGIN(RAM) + LENGTH(RAM); //This line can be anywhere except inside MEMORY Block
 
 SECTIONS
-{
- 
-     .text
+{ 
+    .text :
     {
         *(.isr_vector*)
         *(.text*)
     } > FLASH
     
-    .data
+    .data :
     {
         _sdata = .;
         *(.data*)
@@ -23,11 +23,11 @@ SECTIONS
     
     _sidata = LOADADDR(.data);
     
-    .bss
+    .bss :
     {
         _sbss = .;
         *(.bss*)
-        _ebss =.;
+        _ebss = .;
     } > RAM
     
 }

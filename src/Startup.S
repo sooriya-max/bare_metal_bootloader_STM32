@@ -1,0 +1,11 @@
+.section .isr_vector, "a"
+
+.extern _estack
+
+.word _estack
+.word Reset_Handler
+.word NMI_Handler
+.word HardFault_Handler
+
+HardFault_Handler :
+    b .
