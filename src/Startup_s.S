@@ -7,5 +7,7 @@
 .word NMI_Handler
 .word HardFault_Handler
 
+
+NMI_Handler :
 HardFault_Handler :
     b .
