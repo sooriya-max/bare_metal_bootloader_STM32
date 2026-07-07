@@ -54,5 +54,5 @@ void flash_write(volatile uint32_t *dest, const uint32_t *src, uint32_t length)
         length --;
     }
     
-    *FLASH_CR &= ~(1U << 1);  // clear PG bit
+    *FLASH_CR &= ~(1U << 0);  // clear PG bit
 }
