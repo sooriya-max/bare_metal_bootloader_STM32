@@ -12,6 +12,7 @@ SECTIONS
     {
         *(.isr_vector*)
         *(.text*)
+        *(.rodata*)
     } > FLASH
     
     .data :

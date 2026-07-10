@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "flash_sector.h"
+#include "uart.h"
 
 int main()
 {
@@ -11,10 +12,18 @@ int main()
     /* code verified against RM0090, hardware path validated on real silicon would be the next step.*/
     uint32_t length = 4;
 
+    char *uart_transmission = "Bootloader v1.0";
+    uart_init();
+    uart_puts(uart_transmission);
+    uart_flush();
+
     flash_unlock();
     flash_erase_sector(2);          //Erasing Sector 2
     flash_write(dest, src, length);
     flash_lock();
+
+    
+
     
     return 0; 
 }
