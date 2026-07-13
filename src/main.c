@@ -12,17 +12,21 @@ int main()
     /* code verified against RM0090, hardware path validated on real silicon would be the next step.*/
     uint32_t length = 4;
 
-    char *uart_transmission = "Bootloader v1.0";
-    uart_init();
-    uart_puts(uart_transmission);
-    uart_flush();
-
     flash_unlock();
     flash_erase_sector(2);          //Erasing Sector 2
     flash_write(dest, src, length);
     flash_lock();
 
-    
+    char *uart_transmission = "Test For UART : Bootloader v1.0\n";
+    uart_init();
+    uart_puts(uart_transmission);
+    uart_flush();
+
+    //This is a Echo Test with a single character from Rx to Tx
+    uint8_t ch = uart_getc();
+    uart_puts("UART CHARACTER ");
+    uart_write(ch);
+    uart_puts(" GOT IT");    
 
     
     return 0; 
