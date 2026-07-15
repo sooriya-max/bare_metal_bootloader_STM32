@@ -1,0 +1,10 @@
+mach create "stm32f4-bootloader"
+machine LoadPlatformDescription @renode/stm32f4.repl
+
+sysbus LoadELF @src/Bootloader.elf
+
+showAnalyzer usart2
+
+machine StartGdbServer 1234 true
+
+#start  #This "start" command in .resc is running the machine immediately without waiting for GDB, SO Commented it out 
