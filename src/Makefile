@@ -1,5 +1,4 @@
 CPU ?= cortex-m4 
-PROCESSOR ?= olimex-stm32-h405
 BOOTLOADER ?= Bootloader
 
 run: 
@@ -10,7 +9,9 @@ run:
 	arm-none-eabi-as -mthumb -mcpu=$(CPU) -g -c Startup_s.S -o Startup_s.o	
 	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -nostdlib -T ../boot.ld main.o Startup_c.o Startup_s.o flash_sector.o uart.o -o $(BOOTLOADER).elf
 	arm-none-eabi-objdump -D -S $(BOOTLOADER).elf > $(BOOTLOADER).elf.lst
-	qemu-system-arm -S -M $(PROCESSOR) -display none -serial none -serial stdio -kernel Bootloader.elf -gdb tcp::1234
+
+renode:
+	cd .. && renode renode/boot.resc
 
 gdb:
 	gdb-multiarch -q $(BOOTLOADER).elf -ex "target remote localhost:1234"
