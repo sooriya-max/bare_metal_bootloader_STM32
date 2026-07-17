@@ -28,5 +28,5 @@ void Reset_Handler(void)
     
     //Calling Main Function
     main(); 
-    while(1); //THis Line Prevents QEMU from going into a Hardfault, when main() Finishes and returns here
+    while(1); //THis Line Prevents Renode from going into a Hardfault, when main() Finishes and returns here
 }

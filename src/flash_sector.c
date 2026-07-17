@@ -43,7 +43,7 @@ void flash_write(volatile uint32_t *dest, const uint32_t *src, uint32_t length)
     volatile uint32_t *FLASH_CR = FLASH_BASE + 4;
     
     *FLASH_CR &= ~(0x3 << 8);   //setting the 8th and 9th bit to 0 for programming the PSIZE
-    *FLASH_CR |= (0x2 << 8);    //programming the PSIZE to word transfer
+    *FLASH_CR |= (0x2 << 8);    //programming the PSIZE to word transfer i.e for 32 bits
         
     *FLASH_CR |= 0x1;           //programming the PG bit to 1 to activate the Flash programming
     
