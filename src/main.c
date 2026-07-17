@@ -8,11 +8,8 @@ uint8_t recv_buf[FIRMWARE_MAX_SIZE];
 int main()
 {
     const uint32_t src[] = {0xDEADBEEF, 0xCAFEBABE, 0x12345678, 0xABCDABCD};
-    volatile uint32_t * dest = (volatile uint32_t *)0x08008000;     
-    //RAM Address - 0x20000000
-    //Sector 2 Address - 0x08008000; But could not emulate as qemu does not support for flash registers
-    /*Instead of Relying on QEMU Flash Registers, which does not exist, changing the address to RAM path, to see if the given pattern is visible or not*/
-    /* code verified against RM0090, hardware path validated on real silicon would be the next step.*/
+    volatile uint32_t * dest = (volatile uint32_t *)0x08008000;             //This Location is chosen as this is Sector 2 in Flash Controller  
+
     uint32_t length = 4;
 
     flash_unlock();
