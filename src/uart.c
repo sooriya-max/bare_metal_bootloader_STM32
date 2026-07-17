@@ -1,6 +1,8 @@
-#include <stdint.h>
+#include "uart.h"
+#include "CRC.h"
 
 #define UART2 ((volatile uint32_t *)0x40004400)
+
 
 void uart_init(void)
 {
@@ -68,4 +70,51 @@ void uart_flush(void)
 {
     volatile uint32_t *SR       =   UART2 + 0;
     while(!(*SR & (1U << 6)));
+}
+
+uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
+{
+    // wait for 0x69 Start bit
+    while(!(uart_getc() == 0x69));
+
+    //Getting the 4-byte length component
+    uint32_t length = 0;
+    uint8_t iterator = 0;
+    while(iterator < 4)
+    {
+        length |= ((uint32_t)uart_getc() << (iterator * 8));
+        iterator++;
+    }
+
+    //Getting the Length Field into buf
+    if(length > FIRMWARE_MAX_SIZE)
+    {
+        return 0;               //This 0 will go to the length fields of flash write saying that this is a failure
+    }
+    iterator = 0;
+    while(iterator < length)
+    {
+        buf[iterator]= uart_getc();
+        iterator++;
+    }
+    
+    //Getting the CRC word
+    uint32_t CRC_length = 0;
+    iterator = 0;
+    while(iterator < 4)
+    {
+        CRC_length |= ((uint32_t)uart_getc() << (iterator * 8));
+        iterator++;
+    }
+
+
+    //CRC Computation
+    uint32_t received_crc = CRC_length;                  // what host sent
+    uint32_t computed_crc = crc32_compute(buf, length);  // what I calculated
+
+    if(computed_crc != received_crc) 
+        return 0;
+
+    //Returning the Length parameter
+    return length;    
 }

@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "flash_sector.h"
 
 #define FLASH_BASE ((volatile uint32_t *)0x40023C00)

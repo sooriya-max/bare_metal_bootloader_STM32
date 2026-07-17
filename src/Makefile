@@ -6,8 +6,11 @@ run:
 	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -g -c main.c -o main.o
 	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -g -c Startup_c.c -o Startup_c.o
 	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -g -c uart.c -o uart.o
+	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -g -c CRC.c -o CRC.o
 	arm-none-eabi-as -mthumb -mcpu=$(CPU) -g -c Startup_s.S -o Startup_s.o	
-	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -nostdlib -T ../boot.ld main.o Startup_c.o Startup_s.o flash_sector.o uart.o -o $(BOOTLOADER).elf
+	
+	arm-none-eabi-gcc -mthumb -mcpu=$(CPU) -nostdlib -T ../boot.ld main.o Startup_c.o Startup_s.o flash_sector.o uart.o CRC.o -o $(BOOTLOADER).elf
+
 	arm-none-eabi-objdump -D -S $(BOOTLOADER).elf > $(BOOTLOADER).elf.lst
 
 renode:
