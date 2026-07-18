@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "flash_sector.h"
 #include "uart.h"
+#include "app_jump.h"
 
 /*CURRENT IMPLEMENTATION : uart_init() → uart_puts() → uart_receive_image() → CRC validate → flash_erase() → flash_write()*/
 
@@ -31,6 +32,9 @@ int main()
 
     uart_puts("FLASH OK\r\n");   
 
+
+    //Calling the Application Jump function
+    app_jump();
     
     return 0; 
 }
