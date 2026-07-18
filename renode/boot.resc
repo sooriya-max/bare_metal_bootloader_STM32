@@ -5,6 +5,10 @@ sysbus LoadELF @src/Bootloader.elf
 
 showAnalyzer usart2
 
+emulation CreateServerSocketTerminal 3456 "term" false  #This line creates a server socket at port : 3456 for uart to listen to and the 'term' is internal name given to 
+                                                        #the UART port and the "false" means, don't use telnet, we are using raw bytes kinda message to system
+connector Connect usart2 term                           # Python → TCP:3456 → term → usart2 → uart_receive_image()
+
 machine StartGdbServer 1234 true
 
 #start  #This "start" command in .resc is running the machine immediately without waiting for GDB, SO Commented it out 
