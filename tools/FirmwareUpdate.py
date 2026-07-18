@@ -4,6 +4,8 @@ import serial   # THis library is for the transport of data from host <--> STM v
 
 magic = bytes([0x69])       #here the [] is important, without it python assumes it as a regular integer and sets 0x69 or 105 bytes of zeros
 
+
+#This application.bin seems to be a problem, gonna investigate from this point tomorrow
 #with open('../app/Application.bin', 'rb') as f:
 #    firmware = f.read()
 firmware = bytes([0xAB, 0xCD, 0xBE, 0xEF])
