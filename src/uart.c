@@ -79,7 +79,7 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
 
     //Getting the 4-byte length component
     uint32_t length = 0;
-    uint8_t iterator = 0;
+    uint32_t iterator = 0;
     while(iterator < 4)
     {
         length |= ((uint32_t)uart_getc() << (iterator * 8));

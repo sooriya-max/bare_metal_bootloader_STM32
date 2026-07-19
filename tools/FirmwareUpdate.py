@@ -6,14 +6,14 @@ magic = bytes([0x69])       #here the [] is important, without it python assumes
 
 
 #This application.bin seems to be a problem, gonna investigate from this point tomorrow
-#with open('../app/Application.bin', 'rb') as f:
-#    firmware = f.read()
-firmware = bytes([0xAB, 0xCD, 0xBE, 0xEF])
+with open('../app/Application.bin', 'rb') as f:
+    firmware = f.read()
+#firmware = bytes([0xAB, 0xCD, 0xBE, 0xEF])
 length = len(firmware)
 length_bytes = struct.pack('<I',length)
 
-crc32 = zlib.crc32(firmware)            #CRC Calculation for the firmware
-crc32_bytes = struct.pack('<I', crc32)  #Packing the crc32 into a structure of 4 byte words since it is an integer and needs to be converted as raw bytes to be sent
+crc32 = zlib.crc32(firmware) & 0xffffffff         #CRC Calculation for the firmware
+crc32_bytes = struct.pack('<I', crc32)            #Packing the crc32 into a structure of 4 byte words since it is an integer and needs to be converted as raw bytes to be sent
 
 #final Message appending
 final = magic + length_bytes + firmware + crc32_bytes
