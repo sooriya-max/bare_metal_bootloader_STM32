@@ -20,5 +20,13 @@ final = magic + length_bytes + firmware + crc32_bytes
 
 
 port = serial.serial_for_url('socket://localhost:3456') #This line says open a socket at 3456 ; socket tells us this is a TCP socket connection and Not a USBtty0 connection
+
+
+#Debug Lines
+print(f"length = {length}")
+print(f"crc32  = {hex(crc32)}")
+print(f"first 4 bytes = {firmware[:4].hex()}")
+print(f"last 4 bytes  = {firmware[-4:].hex()}")
+#Debug Lines End
 port.write(final)           # this is for the writing of data via the serial port we just create
 port.close()
