@@ -75,14 +75,14 @@ void uart_flush(void)
 
 /*DEBUG SESSION STARTS*/
 
-void print_hex(uint32_t val) {
-    char hex[] = "0123456789ABCDEF";
-    for(int i = 7; i >= 0; i--) {
-        uart_write(hex[(val >> (i * 4)) & 0xF]);
-    }
-    uart_write('\r');
-    uart_write('\n');
-}
+// void print_hex(uint32_t val) {
+//     char hex[] = "0123456789ABCDEF";
+//     for(int i = 7; i >= 0; i--) {
+//         uart_write(hex[(val >> (i * 4)) & 0xF]);
+//     }
+//     uart_write('\r');
+//     uart_write('\n');
+// }
 
 /*DEBUG SESSION ENDS*/
 
@@ -129,8 +129,8 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
     uint32_t computed_crc = crc32_compute(buf, length);  // what I calculated
 
     /*Debug Session Code Starts*/
-    print_hex(received_crc);
-    print_hex(computed_crc);
+    // print_hex(received_crc);
+    // print_hex(computed_crc);
     
     
     

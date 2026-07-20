@@ -1,7 +1,7 @@
 import struct   #This library is to pack integers into 4 bytes or whichever bytes needed
 import zlib     #For CRC32 Calculation
 import serial   # THis library is for the transport of data from host <--> STM via UART
-
+import time 
 magic = bytes([0x69])       #here the [] is important, without it python assumes it as a regular integer and sets 0x69 or 105 bytes of zeros
 
 
@@ -28,5 +28,9 @@ print(f"crc32  = {hex(crc32)}")
 print(f"first 4 bytes = {firmware[:4].hex()}")
 print(f"last 4 bytes  = {firmware[-4:].hex()}")
 #Debug Lines End
-port.write(final)           # this is for the writing of data via the serial port we just create
+#port.write(final)           # this is for the writing of data via the serial port we just create
+for byte in final:
+    port.write(bytes([byte]))
+    time.sleep(0.0001)           #1ms Delay
+
 port.close()
