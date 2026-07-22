@@ -12,11 +12,6 @@ run:
 	arm-none-eabi-objdump -D -S $(APPLICATION).elf > $(APPLICATION).elf.lst
 	arm-none-eabi-objcopy -O binary $(APPLICATION).elf $(APPLICATION).bin 
 
-renode:
-	renode renode/boot.resc
-
-gdb:
-	gdb-multiarch -q $(APPLICATION).elf -ex "target remote localhost:1234"
 
 clean:
 	rm -rf *.o *.out *.elf *.lst *.debug *.bin

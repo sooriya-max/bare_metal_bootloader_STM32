@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "CRC.h"
+#include "ecdsa_verify.h"
 
 #define UART2 ((volatile uint32_t *)0x40004400)
 
@@ -76,10 +77,10 @@ void uart_flush(void)
 
 uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
 {
-    // wait for 0x69 Start bit
+    //1. wait for 0x69 Start bit
     while(!(uart_getc() == 0x69));
 
-    //Getting the 4-byte length component
+    //2. Getting the 4-byte length component
     uint32_t length = 0;
     uint32_t iterator = 0;
     while(iterator < 4)
@@ -88,7 +89,7 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
         iterator++;
     }
 
-    //Getting the Length Field into buf
+    //3. Getting the Length Field into buf
     if(length > FIRMWARE_MAX_SIZE)
     {
         return 0;               //This 0 will go to the length fields of flash write saying that this is a failure
@@ -100,7 +101,7 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
         iterator++;
     }
     
-    //Getting the CRC word
+    //4. Getting the CRC word
     uint32_t CRC_length = 0;
     iterator = 0;
     while(iterator < 4)
@@ -109,19 +110,37 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
         iterator++;
     }
 
-    
     //CRC Computation
     uint32_t received_crc = CRC_length;                  // what host sent    
     uint32_t computed_crc = crc32_compute(buf, length);  // what I calculated
 
     if(computed_crc != received_crc) 
     {
-        uart_puts("MISMATCH\n");
+        uart_puts("CRC32 MISMATCH\n");
         return 0;
     }
 
 
-    uart_puts("MATCH\n");
+
+    //5. ECDSA Signature Verification
+    uint8_t ecdsa_signature[64];
+    iterator = 0;
+    while(iterator < 64)
+    {
+        ecdsa_signature[iterator] = uart_getc();            //Getting the Signature from the host into 64 bytes
+        iterator++;
+    }
+
+    uint8_t ecdsa_result = ecdsa_verify(buf, length, ecdsa_signature);  //Verifying the ECDSA Signature from the ecdsa_verify.c
+    if(!ecdsa_result)
+    {
+        uart_puts("ECDSA MISMATCH\n");
+        return 0;
+    }
+
+
+
+    uart_puts("CRC32 AND ECDSA MATCH\n");
     //Returning the Length parameter
     return length;    
 }
