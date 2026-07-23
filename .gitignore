@@ -4,5 +4,4 @@ build/
 *.lst
 *.map
 *.debug
-*.bin
 .gdb_history

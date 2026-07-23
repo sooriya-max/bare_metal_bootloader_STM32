@@ -1,4 +1,4 @@
-FROM antmicro/renode:1.16.1
+FROM antmicro/renode:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
