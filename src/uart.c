@@ -140,7 +140,7 @@ uint32_t uart_receive_image(uint8_t *buf, uint32_t max_size)
 
 
 
-    uart_puts("CRC32 AND ECDSA MATCH\n");
+    uart_puts("CRC32 or ECDSA MATCH\n");
     //Returning the Length parameter
     return length;    
 }

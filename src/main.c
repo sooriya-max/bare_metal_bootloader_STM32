@@ -18,7 +18,7 @@ int main()
     uint32_t length = uart_receive_image(recv_buf, FIRMWARE_MAX_SIZE);
     if(length == 0)
     {
-        uart_puts("CRC VALIDATION FAILED\r\n");
+        uart_puts("CRC or ECDSA VALIDATION FAILED\r\n");
         while(1);
     }
 
