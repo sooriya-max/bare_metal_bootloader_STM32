@@ -6,6 +6,12 @@ A production-grade bare-metal bootloader built from scratch on STM32F4, simulate
 
 ---
 
+## Demo
+
+▶️ [Watch the full pipeline running in Renode](https://youtu.be/UhMtHUWgMFE)
+
+---
+
 ## What this does
 
 ```
